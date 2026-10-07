@@ -1,34 +1,26 @@
-# multi-job workflow with building an angular application
+# multi-job workflow with sample data just with bash
 name: multi-job-workflow
 on: push
 jobs:
-    job1:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-            - name: Set up Node.js
-              uses: actions/setup-node@v2
-              with:
-                node-version: '14'
+      - name: Run job1 script
+        run: |
+          echo "Running job1 script"
+          echo "Job1 completed"
 
-            - name: Install dependencies
-              run: npm install
+  job2:
+    runs-on: ubuntu-latest
+    needs: job1
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-            - name: Build Angular application
-              run: npm run build --prod
-    job2:
-        runs-on: ubuntu-latest
-        needs: job1
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
-
-            - name: Set up Node.js
-              uses: actions/setup-node@v2
-              with:
-                node-version: '14'
-
-            - name: Run tests
-              run: npm test
+      - name: Run job2 script
+        run: |
+          echo "Running job2 script"
+          echo "Job2 completed"
