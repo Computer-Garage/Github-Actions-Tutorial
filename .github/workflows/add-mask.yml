@@ -1,0 +1,25 @@
+# Use add-mask to hide a generated value in the workflow logs. GITHUB_ENV shares
+# the value with later steps in the same job; it does not pass values between jobs.
+name: data-passing-workflow-mask
+on: push
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Generate and mask sensitive information
+        run: |
+          sensitive_info="$(openssl rand -hex 16)"
+          echo "::add-mask::$sensitive_info"
+          echo "SENSITIVE_INFO=$sensitive_info" >> "$GITHUB_ENV"
+
+      - name: Test
+        run: |
+          echo "Using masked sensitive information in the same job"
+          echo "Sensitive information: $SENSITIVE_INFO"

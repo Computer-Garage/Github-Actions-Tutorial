@@ -1,12 +1,15 @@
 # multi-job workflow with sample data just with bash
 name: multi-job-workflow
 on: push
+permissions:
+  contents: read
+
 jobs:
   job1:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
 
       - name: Run job1 script
         run: |
@@ -18,7 +21,7 @@ jobs:
     needs: job1
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
 
       - name: Run job2 script
         run: |

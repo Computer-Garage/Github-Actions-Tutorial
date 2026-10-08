@@ -1,0 +1,25 @@
+# create a workflow to pass data between jobs in a multi-step github actions workflow using $GITHUB_ENV
+
+name: data-passing-workflow-env
+on: push
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Run build script and set environment variable
+        run: |
+          echo "Running build script"
+          echo "Build completed"
+          echo "BUILD_OUTPUT=Build successful" >> $GITHUB_ENV
+      
+      - name: Use environment variable in the same job
+        run: |
+          echo "Using environment variable in the same job"
+          echo "Build output: $BUILD_OUTPUT"

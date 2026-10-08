@@ -1,5 +1,5 @@
-# multi-step github actions workflow with sample data running
-name: multi-step-workflow
+# create a workflow using GITHUB_STEP_SUMMARY for preparing the summary of the workflow run
+name: data-passing-workflow-summary
 on: push
 
 permissions:
@@ -12,10 +12,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      - name: Run build script
+      - name: Run build script and prepare summary
         run: |
           echo "Running build script"
           echo "Build completed"
+          echo "Build output: Build successful" >> $GITHUB_STEP_SUMMARY
 
   test:
     runs-on: ubuntu-latest
@@ -24,7 +25,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      - name: Run test script
+      - name: Write test-job summary
         run: |
-          echo "Running test script"
-          echo "Test completed"
+          echo "Build job completed successfully." >> "$GITHUB_STEP_SUMMARY"
